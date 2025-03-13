@@ -6,7 +6,7 @@ export function FlipWordsDemo() {
   const words = ["better", "energetic", "beautiful", "modern"];
 
   return (
-    <div className="h-auto flex pt-20 mt-20 pb-10 flex-col justify-center items-center px-4 py-8 bg-black">
+    <div className="h-auto flex pt-20  pb-10 flex-col justify-center items-center px-4 py-8 bg-black">
       <div className="text-2xl mx-auto font-normal text-white dark:text-neutral-400 text-center">
         Ready to light up the night{" "}
         <FlipWords words={words} className="text-slate-500" /> <br />

@@ -7,6 +7,7 @@ import { LayoutGridDemo} from "./components/LayoutGridDemo";
 //import Footer from "./components/Footer";
 import { NavbarDemo } from "./components/NavbarDemo";
 import {FlipWordsDemo} from "./components/FlipWordsDemo";
+import BookingSection from "../about/components/BookingSection";
   
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
         <LayoutGridDemo/>
         <AppleCardsCarouselDemo />
         <FocusCardsDemo />
+        <BookingSection/>
         <FlipWordsDemo/>
         {/* <Footer /> */}
 

@@ -20,7 +20,7 @@ function Navbar({ className }: { className?: string }) {
 
         {/* Home */}
         <MenuItem setActive={setActive} active={active} item="Home">
-          <HoveredLink href="/">Home</HoveredLink>
+          <HoveredLink href="/(home)">Home</HoveredLink>
         </MenuItem>
 
         {/* About Us */}
