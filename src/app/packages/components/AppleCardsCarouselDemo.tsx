@@ -2,8 +2,8 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { Carousel, Card } from "@/app/components/ui/apple-cards-carousel";
-import Modal from "./Modal";
-import PackageDetail from "./PackageDetail";
+import Modal from "@/app/(home)/components/Modal";
+import PackageDetail from "@/app/(home)/components/PackageDetail";
 
 // ✅ Data ko component ke bahar define kiya
 const data = [
