@@ -1,8 +1,11 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
+
 ***Setting Up the Database with Prisma (MySQL) ,,,,(create virtual_venue database in phpmyadmin)**
-1.Clone the repository (if not already done):
+
+1.Clone the repository (if not already done):  
+
 git clone <repo-url>
 2.Install dependencies:
 npm install
