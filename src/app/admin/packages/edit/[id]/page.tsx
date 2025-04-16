@@ -1,72 +1,91 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 
-export default function AddPackagePage() {
-  const router = useRouter()
-  const [form, setForm] = useState({
-    eventCategory: '',
-    venueType: '',
-    packageType: '',
+// Define the type for the URL parameters, with id as a string (since URL params are always strings)
+interface Params {
+  id: string;
+}
+
+const EditPackageForm = () => {
+  const params = useParams();
+  const id = params?.id as string; 
+
+  // Convert id to a number (you can use parseInt or Number)
+  const packageId = id ? parseInt(id, 10) : null; // Ensure it's a number or null if invalid
+
+  const [formData, setFormData] = useState({
+    event_category: '',
+    venue_type: '',
+    package_type: '',
     name: '',
-    price: '',
-    packageFeatures: '',
+    price: 0,
+    package_features: '',
     description: '',
-    imageUrl: '',
-  })
+    image_url: ''
+  });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
-  }
+  // Fetch package details based on the `packageId` when the component mounts
+  useEffect(() => {
+    if (packageId !== null) {
+      // Replace with your actual API call to fetch package details by ID
+      fetch(`/api/packages/single/${id}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setFormData(data); // Set form data with the fetched package details
+        })
+        .catch((error) => {
+          console.error('Error fetching package:', error);
+        });
+    }
+  }, [packageId]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-
-    const payload = {
-      name: form.name,
-      price: form.price,
-      eventCategory: form.eventCategory,
-      venueType: form.venueType, // <-- Add this
-      packageType: form.packageType,
-      packageFeatures: form.packageFeatures, // <-- Fix this
-      description: form.description,
-      imageUrl: form.imageUrl, // <-- Add this if you want to store it
-    }
-
+    e.preventDefault();
+    console.log('Form Data:', formData);
+  
     try {
-      const res = await fetch('/api/packages/add', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      })
-
-      const data = await res.json()
-
-      if (res.ok) {
-        alert('Package added successfully!')
-        router.push('/admin/packages') // or any route you want to redirect to
+      const response = await fetch(`/api/packages/update/${packageId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+  
+      const result = await response.json();
+  
+      if (response.ok) {
+        alert(result.message || 'Package updated successfully!');
       } else {
-        alert(data.message)
+        alert(result.error || 'Update failed.');
       }
-    } catch (err) {
-      console.error(err)
-      alert('Something went wrong')
+    } catch (error) {
+      console.error('Error during update:', error);
+      alert('Something went wrong!');
     }
-  }
+  };
+  
 
   return (
     <div className="max-w-2xl mx-auto mt-10 p-6 border rounded-xl bg-white shadow-md">
-      <h2 className="text-2xl font-bold mb-6 text-center">Add New Venue Package</h2>
+      <h2 className="text-2xl font-bold mb-6 text-center">Edit Venue Package</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Event Category */}
         <div>
           <label className="block mb-1 text-sm font-medium">Event Category</label>
           <select
-            name="eventCategory"
-            value={form.eventCategory}
+            name="event_category"
+            value={formData.event_category}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"
             required
@@ -83,8 +102,8 @@ export default function AddPackagePage() {
         <div>
           <label className="block mb-1 text-sm font-medium">Venue Type</label>
           <select
-            name="venueType"
-            value={form.venueType}
+            name="venue_type"
+            value={formData.venue_type}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"
             required
@@ -102,8 +121,8 @@ export default function AddPackagePage() {
           <label className="block mb-1 text-sm font-medium">Package Type</label>
           <input
             type="text"
-            name="packageType"
-            value={form.packageType}
+            name="package_type"
+            value={formData.package_type}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"
             placeholder="e.g. Standard, Premium, Deluxe"
@@ -117,7 +136,7 @@ export default function AddPackagePage() {
           <input
             type="text"
             name="name"
-            value={form.name}
+            value={formData.name}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"
             required
@@ -130,7 +149,7 @@ export default function AddPackagePage() {
           <input
             type="number"
             name="price"
-            value={form.price}
+            value={formData.price}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"
             required
@@ -142,8 +161,8 @@ export default function AddPackagePage() {
         <div>
           <label className="block mb-1 text-sm font-medium">Features (comma-separated)</label>
           <textarea
-            name="packageFeatures"
-            value={form.packageFeatures}
+            name="package_features"
+            value={formData.package_features}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"
             rows={2}
@@ -157,7 +176,7 @@ export default function AddPackagePage() {
           <label className="block mb-1 text-sm font-medium">Description</label>
           <textarea
             name="description"
-            value={form.description}
+            value={formData.description}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"
             rows={3}
@@ -170,8 +189,8 @@ export default function AddPackagePage() {
           <label className="block mb-1 text-sm font-medium">Image URL (optional)</label>
           <input
             type="text"
-            name="imageUrl"
-            value={form.imageUrl}
+            name="image_url"
+            value={formData.image_url}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"
             placeholder="https://your-image-url.com/image.jpg"
@@ -183,10 +202,12 @@ export default function AddPackagePage() {
             type="submit"
             className="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-500"
           >
-            Add Package
+            Update Package
           </button>
         </div>
       </form>
     </div>
-  )
-}
+  );
+};
+
+export default EditPackageForm;

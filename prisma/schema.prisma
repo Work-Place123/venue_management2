@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model packages {
+  id               Int      @id @default(autoincrement())
+  name             String?  @db.VarChar(255)
+  price            String?  @db.VarChar(50)
+  description      String?  @db.Text
+  created_at       DateTime @default(now()) @db.Timestamp(0)
+  event_category   String?  @db.VarChar(100)
+  package_type     String?  @db.VarChar(100)
+  package_features String?  @db.Text
+  venue_type       String?  @db.VarChar(100)
+  image_url        String?  @db.VarChar(255)
+}
+
+model venues {
+  id          Int      @id @default(autoincrement())
+  name        String?  @db.VarChar(255)
+  city        String?  @db.VarChar(100)
+  category    String?  @db.VarChar(100)
+  description String?  @db.Text
+  created_at  DateTime @default(now()) @db.Timestamp(0)
+}
