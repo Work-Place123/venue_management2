@@ -6,23 +6,39 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 1.Clone the repository (if not already done):  
 
-git clone <repo-url>
-2.Install dependencies:
-npm install
-3.Set up the database connection:
-*Open the .env file in the project root.
+git clone <repo-url>  
 
-*Update the DATABASE_URL with your MySQL credentials:
-DATABASE_URL="mysql://username:password@localhost:3306/your_database" (for our project Database url is "mysql://root:@localhost:3306/virtual_venue")
-4.Run the database migration:
-npx prisma migrate dev --name init
-This will create the database schema in MySQL based on the Prisma schema (schema.prisma).
-5.Generate the Prisma client (optional but recommended):
-npx prisma generate
-6.Check migration status (optional):
-npx prisma migrate status
-7.npm run dev
-8.If you still encounter any issues, please contact the team lead for assistance
+2.Install dependencies:  
+
+npm install  
+
+3.Set up the database connection:  
+
+*Open the .env file in the project root.  
+
+
+*Update the DATABASE_URL with your MySQL credentials:  
+
+DATABASE_URL="mysql://username:password@localhost:3306/your_database" (for our project Database url is "mysql://root:@localhost:3306/virtual_venue")  
+
+4.Run the database migration:  
+
+npx prisma migrate dev --name init  
+
+This will create the database schema in MySQL based on the Prisma schema (schema.prisma).  
+
+5.Generate the Prisma client (optional but recommended):  
+
+npx prisma generate  
+
+6.Check migration status (optional):  
+
+npx prisma migrate status  
+
+7.npm run dev  
+
+8.If you still encounter any issues, please contact the team lead for assistance  
+
 ***************Happy coding**********************
 
 
