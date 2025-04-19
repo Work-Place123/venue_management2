@@ -12,17 +12,6 @@ export default function UploadPhotosPage() {
     related: '',
   })
 
-  const [backendStatus, setBackendStatus] = useState('Checking connection...')
-
-  useEffect(() => {
-    fetch('http://localhost:8000/api/test-connection')
-      .then((res) => res.json())
-      .then((data) => setBackendStatus(`✅ Connected: ${data.message}`))
-      .catch((err) => {
-        console.error('Connection error:', err)
-        setBackendStatus('❌ Failed to connect to Laravel backend')
-      })
-  }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -40,7 +29,7 @@ export default function UploadPhotosPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   
-    // Check for required fields
+    // Ensure all required fields are filled
     if (!form.title || !form.caption || !form.file) {
       alert('Please fill out all fields and select a file.');
       return;
@@ -54,25 +43,33 @@ export default function UploadPhotosPage() {
     formData.append('image', form.file);
   
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/upload-image', {
+      const response = await fetch('/api/gallery/upload', {
         method: 'POST',
         body: formData,
       });
   
       if (response.ok) {
         const data = await response.json();
-        console.log('Uploaded photo:', data);
         alert('Image uploaded successfully!');
+        // Optionally, clear the form after submission
+        setForm({
+          title: '',
+          caption: '',
+          altText: '',
+          description: '',
+          file: null,
+          related: '',
+        });
       } else {
         const errorData = await response.json();
-        console.error('Upload failed:', errorData);
-        alert(`Image upload failed: ${errorData.message || 'Unknown error'}`);
+        alert(`Upload failed: ${errorData.message || 'Unknown error'}`);
       }
     } catch (error) {
       console.error('Upload error:', error);
-      alert('An error occurred during upload.');
+      alert('An error occurred during the upload.');
     }
   };
+  
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -89,10 +86,6 @@ export default function UploadPhotosPage() {
   return (
     <div className="max-w-2xl mx-auto">
       <h2 className="text-xl font-bold mb-6">Upload New Image</h2>
-
-      <div className="mb-4 p-3 border rounded bg-gray-100 text-sm text-gray-800">
-        Laravel Status: {backendStatus}
-      </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>

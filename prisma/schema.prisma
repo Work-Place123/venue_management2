@@ -28,3 +28,32 @@ model venues {
   description String?  @db.Text
   created_at  DateTime @default(now()) @db.Timestamp(0)
 }
+
+model photos {
+  id          Int      @id @default(autoincrement())
+  title       String?  @db.VarChar(255)
+  caption     String?  @db.VarChar(255)
+  altText     String?  @db.VarChar(255)
+  description String?  @db.Text
+  filePath    String?  @db.VarChar(255)
+  related     String?  @db.VarChar(255)
+  created_at  DateTime @default(now()) @db.Timestamp(0)
+}
+
+model manualBooking {
+  id               Int       @id @default(autoincrement())
+  name             String    @db.VarChar(255)
+  email            String    @db.VarChar(255)
+  phone            String    @db.VarChar(20)
+  eventDate        DateTime  @db.DateTime(0)
+  venueType        String    @db.VarChar(100)
+  numberOfGuests   Int
+  useCustomPlanner Boolean   @default(false)
+  packageId        Int?
+  customServices   String?   @db.Text
+  customPrice      Float?    @db.Float
+  paymentStatus    String    @db.VarChar(50)
+  paymentMethod    String    @db.VarChar(50)
+  specialRequests  String?   @db.Text
+  createdAt        DateTime? @default(now()) @db.DateTime(0)
+}
